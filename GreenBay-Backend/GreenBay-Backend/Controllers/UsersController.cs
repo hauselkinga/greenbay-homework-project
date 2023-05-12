@@ -1,15 +1,17 @@
-﻿namespace GreenBay_Backend.Controllers
+﻿using GreenBay_Backend.Repositories;
+
+namespace GreenBay_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public UsersController(ApplicationDbContext context, IMapper mapper)
+        private readonly IUserRepository _userRepository;
+        public UsersController(IMapper mapper, IUserRepository userRepository)
         {
-            _context = context;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
@@ -17,8 +19,8 @@
         {
             var user = _mapper.Map<User>(userData);
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            _userRepository.AddUser(user);
+            await _userRepository.SaveUser();
 
             return Ok(user);
         }
