@@ -12,7 +12,7 @@
             _userRepository = userRepository;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -52,6 +52,21 @@
             await _userRepository.SaveUser();
 
             return Ok(user);
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult Login(UserLoginDTO loginData)
+        {
+            var userFromDb = _userRepository.GetUserByUsername(loginData.UserName);
+
+            if (userFromDb == null || loginData.Password != userFromDb.Password)
+            {
+                return Unauthorized("Error: Wrong UserName or Password");
+            }
+
+            return Ok();
         }
     }
 }

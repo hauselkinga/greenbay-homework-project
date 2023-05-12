@@ -27,5 +27,12 @@
             }
             return true;
         }
+
+        public User GetUserByUsername(string username)
+        {
+            var userFromDb = _context.Users.FirstOrDefault(u => u.UserName == username);
+
+            return userFromDb!;
+        }
     }
 }
