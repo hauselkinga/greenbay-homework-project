@@ -6,10 +6,12 @@
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        public UsersController(IMapper mapper, IUserRepository userRepository)
+        private readonly IUserHelper _userHelper;
+        public UsersController(IMapper mapper, IUserRepository userRepository, IUserHelper userHelper)
         {
             _mapper = mapper;
             _userRepository = userRepository;
+            _userHelper = userHelper;
         }
 
         [HttpPost("register")]
@@ -48,10 +50,18 @@
 
             var user = _mapper.Map<User>(userData);
 
-            _userRepository.AddUser(user);
-            await _userRepository.SaveUser();
+            try
+            {
+                user.Password = _userHelper.HashPassword(user.Password);
+                _userRepository.AddUser(user);
+                await _userRepository.SaveUser();
 
-            return Ok(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpPost("login")]
@@ -60,8 +70,9 @@
         public ActionResult Login(UserLoginDTO loginData)
         {
             var userFromDb = _userRepository.GetUserByUsername(loginData.UserName);
+            var hashedPassword = _userHelper.HashPassword(loginData.Password);
 
-            if (userFromDb == null || loginData.Password != userFromDb.Password)
+            if (userFromDb == null || hashedPassword != userFromDb.Password)
             {
                 return Unauthorized("Error: Wrong UserName or Password");
             }

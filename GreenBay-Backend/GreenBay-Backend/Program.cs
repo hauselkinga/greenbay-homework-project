@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
