@@ -17,5 +17,15 @@
         {
             return _context.SaveChangesAsync();
         }
+
+        public bool UsernameExists(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserName== username);
+            if (user == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -15,6 +15,8 @@
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+
         public async Task<ActionResult> Register(UserCreationDTO userData)
         {
             if (string.IsNullOrEmpty(userData.UserName)
@@ -37,6 +39,11 @@
             } else if (userData.Password.Length > 256)
             {
                 return BadRequest("Error: Incorrect password format.");
+            }
+
+            if (_userRepository.UsernameExists(userData.UserName))
+            {
+                return Conflict("Error: UserName already exists.");
             }
 
             var user = _mapper.Map<User>(userData);
