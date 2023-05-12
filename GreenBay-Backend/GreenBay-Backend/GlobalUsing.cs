@@ -1,4 +1,5 @@
 ﻿global using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
 global using GreenBay_Backend.Models;
 global using GreenBay_Backend.Data;
 global using Microsoft.AspNetCore.Mvc;
