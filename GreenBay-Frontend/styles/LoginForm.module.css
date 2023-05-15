@@ -1,0 +1,29 @@
+.label,
+.input {
+  display: block;
+  font-size: 24px;
+}
+
+.input {
+  background-color: #09192f;
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  width: 100%;
+  padding: 10px;
+  color: #c8d2f1;
+  margin: 1rem 0;
+}
+
+.input:focus {
+  outline: #53d2ba solid 1px;
+  border-radius: 4px;
+}
+
+.formControl {
+  margin: 2rem 0;
+}
+
+.button {
+  width: 100%;
+}
