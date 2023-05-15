@@ -67,7 +67,7 @@
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult Login(UserLoginDTO loginData)
+        public ActionResult<string> Login(UserLoginDTO loginData)
         {
             var userFromDb = _userRepository.GetUserByUsername(loginData.UserName);
             var hashedPassword = _userHelper.HashPassword(loginData.Password);
@@ -77,7 +77,9 @@
                 return Unauthorized("Error: Wrong UserName or Password");
             }
 
-            return Ok();
+            var token = _userHelper.CreateToken(userFromDb);
+
+            return Ok(token);
         }
     }
 }
