@@ -1,11 +1,14 @@
 import LoginForm from "../../comps/LoginForm.js";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router.js";
+import { useState } from "react";
 
 export default function Login() {
+  const [error, setError] = useState("");
   const router = useRouter();
 
   async function handleSubmitCallback(data) {
+    setError("");
     const result = await signIn("credentials", {
       username: data.username,
       password: data.password,
@@ -15,7 +18,7 @@ export default function Login() {
     if (result.ok) {
       router.push("/");
     } else {
-      console.log("Wrong username or password!");
+      setError("Wrong username or password. :(");
     }
 
     return result;
@@ -25,6 +28,7 @@ export default function Login() {
     <div className="container">
       <div className="content">
         <h1>Login</h1>
+        <small className="small">{error}</small>
         <div className="center">
           <LoginForm handleSubmitCallback={handleSubmitCallback} />
         </div>
