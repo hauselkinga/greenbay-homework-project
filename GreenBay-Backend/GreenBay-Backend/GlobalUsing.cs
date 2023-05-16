@@ -5,6 +5,7 @@ global using GreenBay_Backend.Data;
 global using Microsoft.AspNetCore.Mvc;
 global using System.ComponentModel.DataAnnotations;
 global using GreenBay_Backend.DTO.Incoming;
+global using GreenBay_Backend.DTO.Outgoing;
 global using System.Text.Json.Serialization;
 global using GreenBay_Backend.Repositories;
 global using GreenBay_Backend.Helpers;
