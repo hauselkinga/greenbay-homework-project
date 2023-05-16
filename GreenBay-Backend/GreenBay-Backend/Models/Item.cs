@@ -14,6 +14,8 @@
         [Required]
         public int Price { get; set; } = 0;
         [Required]
+        public int UserId { get; set; }
+        [Required]
         public virtual User User { get; set; } = new User();
     }
 }
