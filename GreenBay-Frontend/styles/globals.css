@@ -80,3 +80,7 @@ button:active {
   display: flex;
   flex-direction: column;
 }
+
+.small {
+  color: #fe5174;
+}

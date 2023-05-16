@@ -16,8 +16,10 @@ export default function RegistrationForm({ handleSubmitCallback }) {
 
     const verifyResult = await verifyInput(data);
     setErrors(verifyResult);
-
-    handleSubmitCallback(data);
+    
+    if (Object.keys(verifyResult).length === 0) {
+      handleSubmitCallback(data);
+    }
   }
 
   function handleChange(e) {
@@ -61,7 +63,7 @@ export default function RegistrationForm({ handleSubmitCallback }) {
           className={styles.input}
           onChange={handleChange}
         ></input>
-        <small className={styles.small}>{errors.username}</small>
+        <small className="small">{errors.username}</small>
       </div>
       <div className={styles.formControl}>
         <label htmlFor="password1" className={styles.label}>
@@ -74,7 +76,7 @@ export default function RegistrationForm({ handleSubmitCallback }) {
           className={styles.input}
           onChange={handleChange}
         ></input>
-        <small className={styles.small}>{errors.password1}</small>
+        <small className="small">{errors.password1}</small>
       </div>
       <div className={styles.formControl}>
         <label htmlFor="password2" className={styles.label}>
@@ -87,7 +89,7 @@ export default function RegistrationForm({ handleSubmitCallback }) {
           className={styles.input}
           onChange={handleChange}
         ></input>
-        <small className={styles.small}>{errors.password2}</small>
+        <small className="small">{errors.password2}</small>
       </div>
       <button className={styles.button} onClick={handleSubmit}>
         Submit
