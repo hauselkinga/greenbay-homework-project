@@ -12,5 +12,6 @@
         public string Password { get; set; } = string.Empty;
         [Required]
         public int Balance { get; set; } = 0;
+        public virtual List<Item> Items { get; set; } = new List<Item>();
     }
 }
