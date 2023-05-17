@@ -10,6 +10,7 @@
         [Required]
         public string Description { get; set; } = string.Empty;
         [Required]
+        [StringLength(maximumLength: 2048)]
         public string PhotoURL { get; set; } = string.Empty;
         [Required]
         public int Price { get; set; } = 0;
