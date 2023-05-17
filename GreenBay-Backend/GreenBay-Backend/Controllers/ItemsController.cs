@@ -48,18 +48,35 @@
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateItem(ItemCreationDTO itemCreationDTO)
         {
             var item = _mapper.Map<Item>(itemCreationDTO);
 
-            _itemRepository.AddItem(item);
-            await _itemRepository.SaveAsync();
+            if (string.IsNullOrEmpty(item.Name)
+                || string.IsNullOrEmpty(item.Description)
+                || string.IsNullOrEmpty(item.PhotoURL)
+                || item.Price <= 0
+                || item.UserId <= 0)
+            {
+                return BadRequest();
+            }
 
-            // due to LazyLoading the User property will remain null until it's explicitly accessed or loaded
-            await _itemRepository.LoadUserExplicitly(item);
-            var result = _mapper.Map<ItemDTO>(item);
+            try
+            {
+                _itemRepository.AddItem(item);
+                await _itemRepository.SaveAsync();
 
-            return StatusCode(StatusCodes.Status201Created, result);
+                // due to LazyLoading the User property will remain null until it's explicitly accessed or loaded
+                await _itemRepository.LoadUserExplicitly(item);
+                var result = _mapper.Map<ItemDTO>(item);
+
+                return StatusCode(StatusCodes.Status201Created, result);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
     }
 }
