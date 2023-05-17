@@ -13,6 +13,6 @@
         [Required]
         public int Price { get; set; }
         [Required]
-        public string Seller { get; set; } = string.Empty;
+        public int UserId { get; set; }
     }
 }

@@ -48,8 +48,8 @@
                     opt => opt.MapFrom(src => src.Price)
                 )
                 .ForMember(
-                    dest => dest.User.UserName,
-                    opt => opt.MapFrom(src => src.Seller)
+                    dest => dest.UserId,
+                    opt => opt.MapFrom(src => src.UserId)
                 );
         }
     }
