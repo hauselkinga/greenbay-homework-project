@@ -29,5 +29,12 @@
         {
             return _context.SaveChangesAsync();
         }
+
+        public Task LoadUserExplicitly(Item item)
+        {
+            return _context.Entry(item)
+                .Reference(i => i.User)
+                .LoadAsync();
+        }
     }
 }

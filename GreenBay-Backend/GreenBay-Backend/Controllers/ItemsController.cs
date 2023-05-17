@@ -23,7 +23,7 @@
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name="GetItemById")]
+        [HttpGet("{id}", Name = "GetItemById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,7 +33,7 @@
             {
                 return BadRequest();
             }
-            
+
             var item = _itemRepository.GetItemById(id);
 
             if (item == null)
@@ -44,7 +44,22 @@
             var result = _mapper.Map<ItemDTO>(item);
 
             return Ok(result);
+        }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult> CreateItem(ItemCreationDTO itemCreationDTO)
+        {
+            var item = _mapper.Map<Item>(itemCreationDTO);
+
+            _itemRepository.AddItem(item);
+            await _itemRepository.SaveAsync();
+
+            // due to LazyLoading the User property will remain null until it's explicitly accessed or loaded
+            await _itemRepository.LoadUserExplicitly(item);
+            var result = _mapper.Map<ItemDTO>(item);
+
+            return StatusCode(StatusCodes.Status201Created, result);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace GreenBay_Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("GreenBay_Backend.Models.User", b =>
@@ -75,7 +75,7 @@ namespace GreenBay_Backend.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("GreenBay_Backend.Models.Item", b =>

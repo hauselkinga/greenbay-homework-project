@@ -27,7 +27,7 @@
                 )
                 .ForMember(
                     dest => dest.Seller,
-                    opt => opt.MapFrom(src => src.User.UserName)
+                    opt => opt.MapFrom(src => src.User!.UserName)
                 );
 
             CreateMap<ItemCreationDTO, Item>()
