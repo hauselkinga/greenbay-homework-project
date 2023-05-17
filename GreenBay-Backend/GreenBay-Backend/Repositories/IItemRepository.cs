@@ -4,5 +4,7 @@
     {
         public Task<List<Item>> GetItems();
         public Item GetItemById(int id);
+        public void AddItem(Item item);
+        public Task SaveAsync();
     }
 }

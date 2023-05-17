@@ -20,5 +20,14 @@
             return item!;
         }
 
+        public void AddItem(Item item)
+        {
+            _context.Items.Add(item);
+        }
+
+        public Task SaveAsync()
+        {
+            return _context.SaveChangesAsync();
+        }
     }
 }
