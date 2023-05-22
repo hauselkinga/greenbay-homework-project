@@ -16,6 +16,20 @@ builder.Services.AddTransient<IItemRepository, ItemRepository>();
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+        };
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

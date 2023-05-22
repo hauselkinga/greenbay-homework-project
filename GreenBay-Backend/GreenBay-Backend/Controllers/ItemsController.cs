@@ -1,6 +1,7 @@
 ﻿namespace GreenBay_Backend.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ItemsController : ControllerBase
     {
