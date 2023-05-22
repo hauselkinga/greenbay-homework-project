@@ -23,7 +23,6 @@ export async function getServerSideProps(context) {
     const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/items`, {
       headers: { Authorization: `Bearer ${session.accessToken}` },
     });
-    console.log(result.data);
     const data = result.data;
     return { props: { data } };
   } catch (err) {
