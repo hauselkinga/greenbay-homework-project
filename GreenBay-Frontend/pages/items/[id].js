@@ -2,13 +2,15 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 
 export default function ItemDetails({ item }) {
-  return <div>
-    <img src={item.photoURL} />
-    <h1>Item name: {item.name}</h1>
-    <p>Price: {item.price} GBD</p>
-    <p>Description: {item.description}</p>
-    <p>Seller: {item.seller}</p>
-  </div>;
+  return (
+    <div className="content">
+      <img src={item.photoURL} />
+      <h1>Item name: {item.name}</h1>
+      <p>Price: {item.price} GBD</p>
+      <p>Description: {item.description}</p>
+      <p>Seller: {item.seller}</p>
+    </div>
+  );
 }
 
 export async function getServerSideProps(context) {
