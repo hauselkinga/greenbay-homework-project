@@ -13,30 +13,64 @@ export default function CreateItem() {
   };
 
   const [data, setData] = useState(initialValues);
+  const [errors, setErrors] = useState({});
 
   function handleChange(e) {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   }
 
+  async function verifyInput(data) {
+    const errors = {};
+
+    if (!data.name) {
+      errors.name = "Item name is required!";
+    } else if (data.name.length < 3) {
+      errors.name = "Item name must be at least 3 characters long!";
+    }
+
+    if (!data.description) {
+      errors.description = "Description is required!";
+    }
+
+    if (!data.photoURL) {
+      errors.photoURL = "Photo URL is required!";
+    }
+
+    if (!data.price) {
+      errors.price = "Price is required!";
+    } else if (data.price <= 0) {
+      errors.price = "Price must be greater than 0!";
+    }
+
+    return errors;
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      const session = await getSession();
+    const verifyResult = await verifyInput(data);
+    setErrors(verifyResult);
 
-      if (session) {
-        setData({ ...data, userId: session.user.id });
+    const session = await getSession();
+    if (!session) {
+      return;
+    }
+
+    if (Object.keys(verifyResult).length === 0) {
+      try {
+        const updatedData = { ...data, userId: session.user.id };
+        setData(updatedData);
+
+        const result = await axios.post(`/api/items`, updatedData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        });
+      } catch (err) {
+        console.log(err);
       }
-
-      const result = await axios.post(`/api/items`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.accessToken}`,
-        },
-      });
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -55,6 +89,7 @@ export default function CreateItem() {
             className={styles.input}
             onChange={handleChange}
           ></input>
+          <small className="small">{errors.name}</small>
         </div>
         <div className={styles.formControl}>
           <label htmlFor="description" className={styles.label}>
@@ -68,6 +103,7 @@ export default function CreateItem() {
             className={styles.input}
             onChange={handleChange}
           ></textarea>
+          <small className="small">{errors.description}</small>
         </div>
         <div className={styles.formControl}>
           <label htmlFor="photoURL" className={styles.label}>
@@ -80,6 +116,7 @@ export default function CreateItem() {
             className={styles.input}
             onChange={handleChange}
           ></input>
+          <small className="small">{errors.photoURL}</small>
         </div>
         <div className={styles.formControl}>
           <label htmlFor="price" className={styles.label}>
@@ -92,6 +129,7 @@ export default function CreateItem() {
             className={styles.input}
             onChange={handleChange}
           ></input>
+          <small className="small">{errors.price}</small>
         </div>
         <button className={styles.button} onClick={handleSubmit}>
           Submit
