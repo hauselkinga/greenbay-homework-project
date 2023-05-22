@@ -1,4 +1,4 @@
-import styles from "../styles/LoginForm.module.css";
+import styles from "../styles/form.module.css";
 import { useState } from "react";
 
 export default function LoginForm({ handleSubmitCallback }) {
