@@ -12,6 +12,7 @@
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim("id", user.Id.ToString()),
                 new Claim("username", user.UserName)
             };
 
