@@ -14,16 +14,28 @@ export default function Navbar() {
       {session?.user ? (
         <>
           <p>Hello {session.user.username}!</p>
-          <button className={styles.button} onClick={() => signOut()}>
-            Sign Out
-          </button>
+          <div>
+            <button
+              className={styles.button}
+              onClick={() => router.push("/items")}
+            >
+              View Items
+            </button>
+            <button className={styles.button} onClick={() => signOut()}>
+              Sign Out
+            </button>
+          </div>
         </>
       ) : (
         <div>
           <button className={styles.button} onClick={() => signIn()}>
             Sign In
           </button>
-          <button href={"/register"} className={styles.button} onClick={() => router.push("/registration")}>
+          <button
+            href={"/register"}
+            className={styles.button}
+            onClick={() => router.push("/registration")}
+          >
             Register
           </button>
         </div>
