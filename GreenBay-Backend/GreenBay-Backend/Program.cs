@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString(name: "DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-               .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+               .GetBytes(Environment.GetEnvironmentVariable("GreenBayToken")!)),
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true,
