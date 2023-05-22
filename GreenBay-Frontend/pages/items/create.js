@@ -1,20 +1,40 @@
 import axios from "axios";
+import { useState } from "react";
+import { getSession } from "next-auth/react";
 import styles from "../../styles/form.module.css";
 
 export default function CreateItem() {
+  const initialValues = {
+    name: "",
+    description: "",
+    photoURL: "",
+    price: 0,
+    userId: 0,
+  };
+
+  const [data, setData] = useState(initialValues);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      const result = axios.post(
-        `/api/items`,
-        { data: "asd" },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const session = await getSession();
+
+      if (session) {
+        setData({ ...data, userId: session.user.id });
+      }
+
+      const result = await axios.post(`/api/items`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      });
     } catch (err) {
       console.log(err);
     }
@@ -33,7 +53,7 @@ export default function CreateItem() {
             name="name"
             type="text"
             className={styles.input}
-            // onChange={handleChange}
+            onChange={handleChange}
           ></input>
         </div>
         <div className={styles.formControl}>
@@ -43,21 +63,22 @@ export default function CreateItem() {
           <textarea
             id="description"
             name="description"
-            rows="4" cols="50"
+            rows="4"
+            cols="50"
             className={styles.input}
-            // onChange={handleChange}
+            onChange={handleChange}
           ></textarea>
         </div>
         <div className={styles.formControl}>
-          <label htmlFor="url" className={styles.label}>
+          <label htmlFor="photoURL" className={styles.label}>
             Photo URL:
           </label>
           <input
-            id="url"
-            name="url"
+            id="photoURL"
+            name="photoURL"
             type="url"
             className={styles.input}
-            // onChange={handleChange}
+            onChange={handleChange}
           ></input>
         </div>
         <div className={styles.formControl}>
@@ -69,7 +90,7 @@ export default function CreateItem() {
             name="price"
             type="number"
             className={styles.input}
-            // onChange={handleChange}
+            onChange={handleChange}
           ></input>
         </div>
         <button className={styles.button} onClick={handleSubmit}>
