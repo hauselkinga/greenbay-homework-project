@@ -41,3 +41,20 @@
   color: #6ba59a;
   border: 2px solid #6ba59a;
 }
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 1400px) {
+  .absoluteLeft, .absoluteRight {
+    position: static;
+  }
+
+  .navbar {
+    height: fit-content;
+    flex-direction: column;
+  }
+}

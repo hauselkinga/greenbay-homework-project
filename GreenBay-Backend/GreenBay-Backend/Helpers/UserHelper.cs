@@ -13,7 +13,8 @@
             List<Claim> claims = new List<Claim>
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("username", user.UserName)
+                new Claim("username", user.UserName),
+                new Claim("balance", user.Balance.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("GreenBayToken")!));

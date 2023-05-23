@@ -15,7 +15,10 @@ export default function Navbar() {
 
       {session?.user ? (
         <>
-          <p>Hello {session.user.username}!</p>
+        <div className={styles.welcome}>
+          <p>Hello <strong>{session.user.username}</strong>!</p>
+          <p>Account balance: <strong>{session.user.balance} GBD</strong></p>
+        </div>
           <div className={styles.absoluteRight}>
             <button
               className={styles.button}
@@ -35,7 +38,7 @@ export default function Navbar() {
           </div>
         </>
       ) : (
-        <div>
+        <div className={styles.absoluteRight}>
           <button className={styles.button} onClick={() => signIn()}>
             Sign In
           </button>
