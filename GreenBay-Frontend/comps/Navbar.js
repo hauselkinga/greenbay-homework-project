@@ -9,17 +9,25 @@ export default function Navbar() {
 
   return (
     <div className={styles.navbar}>
-      <Link href="/">GreenBay</Link>
+      <Link className={styles.absoluteLeft} href="/">
+        GreenBay
+      </Link>
 
       {session?.user ? (
         <>
           <p>Hello {session.user.username}!</p>
-          <div>
+          <div className={styles.absoluteRight}>
             <button
               className={styles.button}
               onClick={() => router.push("/items")}
             >
               View Items
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => router.push("/items/create")}
+            >
+              Add New Item
             </button>
             <button className={styles.button} onClick={() => signOut()}>
               Sign Out

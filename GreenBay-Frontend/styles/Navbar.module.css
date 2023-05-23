@@ -4,11 +4,23 @@
   height: 80px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 2rem;
   position: fixed;
   top: 0;
+}
+
+.absoluteLeft, .absoluteRight {
+  position: absolute;
+}
+
+.absoluteLeft {
+  left: 2rem;
+}
+
+.absoluteRight {
+  right: 2rem;
 }
 
 .button {

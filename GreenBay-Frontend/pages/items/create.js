@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { getSession } from "next-auth/react";
 import styles from "../../styles/form.module.css";
+import { useRouter } from "next/router";
 
 export default function CreateItem() {
+  const router = useRouter();
   const initialValues = {
     name: "",
     description: "",
@@ -68,6 +70,7 @@ export default function CreateItem() {
             Authorization: `Bearer ${session.accessToken}`,
           },
         });
+        router.push("/items");
       } catch (err) {
         console.log(err);
       }
