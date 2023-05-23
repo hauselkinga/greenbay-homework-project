@@ -13,5 +13,6 @@
         [Required]
         public int Balance { get; set; } = 0;
         public virtual List<Item> Items { get; set; } = new List<Item>();
+        public virtual List<Item> BoughtItems { get; set; } = new List<Item>();
     }
 }

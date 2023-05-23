@@ -15,10 +15,12 @@
         [Required]
         public int Price { get; set; } = 0;
         [Required]
+        public bool IsSellable { get; set; } = true;
+        [Required]
         public int UserId { get; set; }
+        public int BuyerId { get; set; }
         [Required]
         public virtual User ?User { get; set; }
-        [Required]
-        public bool IsSellable { get; set; } = true;
+        public virtual User ?Buyer { get; set; }
     }
 }

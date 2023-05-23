@@ -15,6 +15,10 @@
                 .HasOne(i => i.User)
                 .WithMany(u => u.Items)
                 .HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<Item>()
+                .HasOne(i => i.Buyer)
+                .WithMany(u => u.BoughtItems)
+                .HasForeignKey(i => i.BuyerId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
