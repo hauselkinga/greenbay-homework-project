@@ -41,5 +41,10 @@
 
             return userFromDb!;
         }
+
+        public void UpdateUser(User user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+        }
     }
 }

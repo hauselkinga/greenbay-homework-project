@@ -111,11 +111,22 @@
                 return BadRequest("Not enough GBD on the account to buy this item!");
             }
 
-            item.IsSellable = false;
-            _itemRepository.UpdateItem(item);
-            await _itemRepository.SaveAsync();
+            try
+            {
+                item.IsSellable = false;
+                _itemRepository.UpdateItem(item);
+                await _itemRepository.SaveAsync();
 
-            return NoContent();
+                user.Balance -= item.Price;
+                _userRepository.UpdateUser(user);
+                await _userRepository.SaveUser();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
     }
 }
