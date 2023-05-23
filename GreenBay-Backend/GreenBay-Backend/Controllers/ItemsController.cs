@@ -90,7 +90,7 @@
         {
             if (id <= 0 || userId <= 0)
             {
-                return BadRequest();
+                return BadRequest("Invalid user or item id!");
             }
 
             var item = _itemRepository.GetItemById(id);
@@ -98,7 +98,17 @@
 
             if (item == null || user == null)
             {
-                return NotFound();
+                return NotFound("User or item does not exist!");
+            }
+
+            if (!item.IsSellable)
+            {
+                return BadRequest("Item is already sold!");
+            }
+
+            if (user.Balance < item.Price)
+            {
+                return BadRequest("Not enough GBD on the account to buy this item!");
             }
 
             return NoContent();
