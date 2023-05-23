@@ -7,11 +7,13 @@
     {
         private readonly IMapper _mapper;
         private readonly IItemRepository _itemRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ItemsController(IMapper mapper, IItemRepository itemRepository)
+        public ItemsController(IMapper mapper, IItemRepository itemRepository, IUserRepository userRepository)
         {
             _mapper = mapper;
             _itemRepository = itemRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -78,6 +80,28 @@
             {
                 return Problem(ex.Message);
             }
+        }
+
+        [HttpPut("{id}"), AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> BuyItem(int id, [FromBody] int userId)
+        {
+            if (id <= 0 || userId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var item = _itemRepository.GetItemById(id);
+            var user = _userRepository.GetUserById(userId);
+
+            if (item == null || user == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
