@@ -8,6 +8,7 @@
         public string PhotoURL { get; set; } = string.Empty;
         public int Price { get; set; }
         public string Seller { get; set; } = string.Empty;
+        public bool IsSellable { get; set; }
 
     }
 }

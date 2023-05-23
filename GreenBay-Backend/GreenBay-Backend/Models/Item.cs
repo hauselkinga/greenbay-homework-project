@@ -18,5 +18,7 @@
         public int UserId { get; set; }
         [Required]
         public virtual User ?User { get; set; }
+        [Required]
+        public bool IsSellable { get; set; } = true;
     }
 }
