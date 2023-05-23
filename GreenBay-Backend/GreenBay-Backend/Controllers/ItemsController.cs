@@ -114,6 +114,7 @@
             try
             {
                 item.IsSellable = false;
+                item.BuyerId = user.Id;
                 _itemRepository.UpdateItem(item);
                 await _itemRepository.SaveAsync();
 
