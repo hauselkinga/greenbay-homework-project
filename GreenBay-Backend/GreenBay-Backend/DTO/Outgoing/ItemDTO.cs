@@ -9,6 +9,7 @@
         public int Price { get; set; }
         public string Seller { get; set; } = string.Empty;
         public bool IsSellable { get; set; }
+        public string Buyer { get; set; } = string.Empty;
 
     }
 }

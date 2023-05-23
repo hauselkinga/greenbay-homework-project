@@ -28,6 +28,10 @@
                 .ForMember(
                     dest => dest.Seller,
                     opt => opt.MapFrom(src => src.User!.UserName)
+                )
+                .ForMember(
+                    dest => dest.Buyer,
+                    opt => opt.MapFrom(src => src.Buyer!.UserName)
                 );
 
             CreateMap<ItemCreationDTO, Item>()
