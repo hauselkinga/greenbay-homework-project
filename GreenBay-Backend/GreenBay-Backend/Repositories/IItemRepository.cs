@@ -7,5 +7,6 @@
         public void AddItem(Item item);
         public Task SaveAsync();
         public Task LoadUserExplicitly(Item item);
+        public void UpdateItem(Item item);
     }
 }

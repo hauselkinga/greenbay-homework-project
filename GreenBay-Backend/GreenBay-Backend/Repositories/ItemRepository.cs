@@ -36,5 +36,10 @@
                 .Reference(i => i.User)
                 .LoadAsync();
         }
+
+        public void UpdateItem(Item item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
     }
 }
