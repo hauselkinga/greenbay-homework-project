@@ -18,7 +18,7 @@
         public bool IsSellable { get; set; } = true;
         [Required]
         public int UserId { get; set; }
-        public int BuyerId { get; set; }
+        public int? BuyerId { get; set; } = null;
         [Required]
         public virtual User ?User { get; set; }
         public virtual User ?Buyer { get; set; }
