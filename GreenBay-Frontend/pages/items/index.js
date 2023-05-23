@@ -1,9 +1,17 @@
 import axios from "axios";
 import Card from "../../comps/Card.js";
 import style from "../../styles/Card.module.css";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router.js";
 
 export default function Items({ data }) {
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
   if (data) {
     return (
       <div className={`${style.card} container`}>
@@ -12,8 +20,6 @@ export default function Items({ data }) {
         })}
       </div>
     );
-  } else {
-    return <div className="container centered">Please Sign In!</div>;
   }
 }
 

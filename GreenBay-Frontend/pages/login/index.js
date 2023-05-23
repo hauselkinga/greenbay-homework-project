@@ -16,7 +16,7 @@ export default function Login() {
     });
 
     if (result.ok) {
-      router.push("/");
+      router.push("/items");
     } else {
       setError("Wrong username or password. :(");
     }

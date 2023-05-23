@@ -1,11 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import styles from "../../styles/form.module.css";
 import { useRouter } from "next/router";
 
 export default function CreateItem() {
   const router = useRouter();
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
   const initialValues = {
     name: "",
     description: "",
@@ -77,67 +83,69 @@ export default function CreateItem() {
     }
   }
 
-  return (
-    <div className="content">
-      <h1>Add a new item for sale!</h1>
-      <form>
-        <div className={styles.formControl}>
-          <label htmlFor="name" className={styles.label}>
-            Name:
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            className={styles.input}
-            onChange={handleChange}
-          ></input>
-          <small className="small">{errors.name}</small>
-        </div>
-        <div className={styles.formControl}>
-          <label htmlFor="description" className={styles.label}>
-            Description:
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            rows="4"
-            cols="50"
-            className={styles.input}
-            onChange={handleChange}
-          ></textarea>
-          <small className="small">{errors.description}</small>
-        </div>
-        <div className={styles.formControl}>
-          <label htmlFor="photoURL" className={styles.label}>
-            Photo URL:
-          </label>
-          <input
-            id="photoURL"
-            name="photoURL"
-            type="url"
-            className={styles.input}
-            onChange={handleChange}
-          ></input>
-          <small className="small">{errors.photoURL}</small>
-        </div>
-        <div className={styles.formControl}>
-          <label htmlFor="price" className={styles.label}>
-            Price:
-          </label>
-          <input
-            id="price"
-            name="price"
-            type="number"
-            className={styles.input}
-            onChange={handleChange}
-          ></input>
-          <small className="small">{errors.price}</small>
-        </div>
-        <button className={styles.button} onClick={handleSubmit}>
-          Submit
-        </button>
-      </form>
-    </div>
-  );
+  if (status === "authenticated") {
+    return (
+      <div className="content">
+        <h1>Add a new item for sale!</h1>
+        <form>
+          <div className={styles.formControl}>
+            <label htmlFor="name" className={styles.label}>
+              Name:
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              className={styles.input}
+              onChange={handleChange}
+            ></input>
+            <small className="small">{errors.name}</small>
+          </div>
+          <div className={styles.formControl}>
+            <label htmlFor="description" className={styles.label}>
+              Description:
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              cols="50"
+              className={styles.input}
+              onChange={handleChange}
+            ></textarea>
+            <small className="small">{errors.description}</small>
+          </div>
+          <div className={styles.formControl}>
+            <label htmlFor="photoURL" className={styles.label}>
+              Photo URL:
+            </label>
+            <input
+              id="photoURL"
+              name="photoURL"
+              type="url"
+              className={styles.input}
+              onChange={handleChange}
+            ></input>
+            <small className="small">{errors.photoURL}</small>
+          </div>
+          <div className={styles.formControl}>
+            <label htmlFor="price" className={styles.label}>
+              Price:
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="number"
+              className={styles.input}
+              onChange={handleChange}
+            ></input>
+            <small className="small">{errors.price}</small>
+          </div>
+          <button className={styles.button} onClick={handleSubmit}>
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
 }
