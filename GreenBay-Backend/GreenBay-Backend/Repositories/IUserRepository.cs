@@ -6,5 +6,6 @@
         public Task SaveUser();
         public bool UsernameExists(string username);
         public User GetUserByUsername(string username);
+        public User GetUserById(int id);
     }
 }

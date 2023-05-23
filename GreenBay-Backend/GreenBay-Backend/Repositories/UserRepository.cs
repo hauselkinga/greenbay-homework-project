@@ -34,5 +34,12 @@
 
             return userFromDb!;
         }
+
+        public User GetUserById(int id)
+        {
+            var userFromDb = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            return userFromDb!;
+        }
     }
 }
