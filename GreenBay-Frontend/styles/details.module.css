@@ -1,0 +1,17 @@
+.container {
+  width: 80%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.imgContainer {
+  height: 500px;
+  width: 500px;
+}
+
+.imgContainer img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

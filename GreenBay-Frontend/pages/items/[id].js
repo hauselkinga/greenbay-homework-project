@@ -1,4 +1,5 @@
 import axios from "axios";
+import styles from "../../styles/details.module.css";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router.js";
 
@@ -12,12 +13,16 @@ export default function ItemDetails({ item }) {
 
   if (item) {
     return (
-      <div className="content">
-        <img src={item.photoURL} />
-        <h1>Item name: {item.name}</h1>
-        <p>Price: {item.price} GBD</p>
-        <p>Description: {item.description}</p>
-        <p>Seller: {item.seller}</p>
+      <div className={`${styles.container} content`}>
+        <div className={styles.imgContainer}>
+          <img src={item.photoURL} />
+        </div>
+        <div>
+          <h1>Item name: {item.name}</h1>
+          <p>Price: {item.price} GBD</p>
+          <p>Description: {item.description}</p>
+          <p>Seller: {item.seller}</p>
+        </div>
       </div>
     );
   }
