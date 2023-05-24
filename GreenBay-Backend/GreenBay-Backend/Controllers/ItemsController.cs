@@ -95,6 +95,7 @@
 
             var item = _itemRepository.GetItemById(id);
             var user = _userRepository.GetUserById(userId);
+            var seller = _userRepository.GetUserById(item.UserId);
 
             if (item == null || user == null)
             {
@@ -120,6 +121,10 @@
 
                 user.Balance -= item.Price;
                 _userRepository.UpdateUser(user);
+                await _userRepository.SaveUser();
+
+                seller.Balance += item.Price;
+                _userRepository.UpdateUser(seller);
                 await _userRepository.SaveUser();
 
                 return NoContent();
