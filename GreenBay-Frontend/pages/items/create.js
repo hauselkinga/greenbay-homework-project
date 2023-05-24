@@ -43,6 +43,8 @@ export default function CreateItem() {
 
     if (!data.photoURL) {
       errors.photoURL = "Photo URL is required!";
+    } else if (!validateURL(data.photoURL)) {
+      errors.photoURL = "URL is invalid!"
     }
 
     if (!data.price) {
@@ -52,6 +54,11 @@ export default function CreateItem() {
     }
 
     return errors;
+  }
+
+  function validateURL(url) {
+    const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    return urlRegex.test(url);
   }
 
   async function handleSubmit(e) {
