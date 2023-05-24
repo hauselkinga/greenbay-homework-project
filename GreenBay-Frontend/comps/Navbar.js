@@ -2,13 +2,15 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
+import { useUserStore } from "../store/useUserStore";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [balance, setBalance] = useState(0);
+  const balance = useUserStore(state => state.balance);
+  const updateBalance = useUserStore(state => state.updateBalance);
   
   useEffect(() => {
     if (session?.user) {
@@ -22,7 +24,7 @@ export default function Navbar() {
         headers: { Authorization: `Bearer ${session.accessToken}` },
       });
       const data = result.data;
-      setBalance(data.balance);
+      updateBalance(data.balance)
     } catch (err) {
       console.log(err.message);
     }

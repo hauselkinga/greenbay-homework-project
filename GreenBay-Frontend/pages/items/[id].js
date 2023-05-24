@@ -2,8 +2,10 @@ import axios from "axios";
 import styles from "../../styles/details.module.css";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router.js";
+import { useUserStore } from "../../store/useUserStore.js";
 
 export default function ItemDetails({ item }) {
+  const updateBalance = useUserStore(state => state.updateBalance);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -11,8 +13,16 @@ export default function ItemDetails({ item }) {
     router.push("/login");
   }
 
-  function refreshData() {
-    router.reload();
+  async function refreshBalance() {
+    try {
+      const result = await axios.get(`/api/users/${session.user.id}`, {
+        headers: { Authorization: `Bearer ${session.accessToken}` },
+      });
+      const data = result.data;
+      updateBalance(data.balance);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   if (item) {
@@ -25,7 +35,7 @@ export default function ItemDetails({ item }) {
           },
         });
         if (result.status < 300) {
-          refreshData();
+          await refreshBalance();
         }
       } catch (err) {
         console.log(err);
