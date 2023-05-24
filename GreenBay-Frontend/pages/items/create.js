@@ -49,8 +49,8 @@ export default function CreateItem() {
 
     if (!data.price) {
       errors.price = "Price is required!";
-    } else if (data.price <= 0) {
-      errors.price = "Price must be greater than 0!";
+    } else if (data.price <= 0 || data.price % 1 != 0) {
+      errors.price = "Price must be a positive whole number!";
     }
 
     return errors;
