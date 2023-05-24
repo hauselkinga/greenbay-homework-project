@@ -16,7 +16,9 @@ export default function Items({ data }) {
     return (
       <div className={`${style.card} container`}>
         {data.map((item) => {
-          return <Card item={item} key={item.id} />;
+          if (item.isSellable) {
+            return <Card item={item} key={item.id} />;
+          }
         })}
       </div>
     );
