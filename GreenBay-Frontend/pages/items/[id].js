@@ -4,7 +4,7 @@ import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router.js";
 
 export default function ItemDetails({ item }) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   if (status === "unauthenticated") {
@@ -12,16 +12,30 @@ export default function ItemDetails({ item }) {
   }
 
   if (item) {
+    async function buy() {
+      try {
+        const result = await axios.put(`/api/items/${item.id}`, session.user.id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     return (
       <div className={`${styles.container} content`}>
         <div className={styles.imgContainer}>
           <img src={item.photoURL} />
         </div>
-        <div>
+        <div className={styles.flex}>
           <h1>Item name: {item.name}</h1>
           <p>Price: {item.price} GBD</p>
           <p>Description: {item.description}</p>
           <p>Seller: {item.seller}</p>
+          <button onClick={buy}>Buy</button>
         </div>
       </div>
     );
