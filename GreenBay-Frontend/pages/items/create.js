@@ -83,7 +83,7 @@ export default function CreateItem() {
             Authorization: `Bearer ${session.accessToken}`,
           },
         });
-        router.push("/items");
+        router.push(`/items/${result.data.id}`);
       } catch (err) {
         console.log(err);
       }
