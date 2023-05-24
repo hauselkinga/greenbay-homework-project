@@ -11,6 +11,10 @@ export default function ItemDetails({ item }) {
     router.push("/login");
   }
 
+  function refreshData() {
+    router.reload();
+  }
+
   if (item) {
     async function buy() {
       try {
@@ -20,6 +24,9 @@ export default function ItemDetails({ item }) {
             Authorization: `Bearer ${session.accessToken}`,
           },
         });
+        if (result.status < 300) {
+          refreshData();
+        }
       } catch (err) {
         console.log(err);
       }
