@@ -14,7 +14,6 @@
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("username", user.UserName),
-                new Claim("balance", user.Balance.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("GreenBayToken")!));
@@ -39,6 +38,16 @@
             var hashedPassword = sha256.ComputeHash(passwordBytes);
             var hexPassword = Convert.ToHexString(hashedPassword);
             return hexPassword;
+        }
+
+        public int GetIdFromToken(StringValues bearerToken)
+        {
+            string token = bearerToken.ToString().Substring(7);
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+
+            return Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "id").Value);
         }
     }
 }

@@ -81,5 +81,17 @@
 
             return Ok(token);
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<User> GetUserById(int id)
+        {
+            var bearerToken = Request.Headers.Authorization;
+
+            var userId = _userHelper.GetIdFromToken(bearerToken);
+
+            return Ok(userId);
+        }
+
     }
 }

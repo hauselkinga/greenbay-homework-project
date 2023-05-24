@@ -16,3 +16,4 @@ global using System.Security.Claims;
 global using Microsoft.AspNetCore.Authorization;
 global using System.Security.Cryptography;
 global using System.Text;
+global using Microsoft.Extensions.Primitives;
