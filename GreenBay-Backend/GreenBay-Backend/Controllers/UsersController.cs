@@ -83,14 +83,23 @@
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<User> GetUserById(int id)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult<UserDTO> GetUserById(int id)
         {
             var bearerToken = Request.Headers.Authorization;
-
             var userId = _userHelper.GetIdFromToken(bearerToken);
 
-            return Ok(userId);
+            if (id != userId)
+            {
+                return Unauthorized();
+            }
+
+            var user = _userRepository.GetUserById(id);
+            var userInfo = _mapper.Map<UserDTO>(user);
+
+            return Ok(userInfo);
         }
 
     }
