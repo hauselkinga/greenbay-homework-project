@@ -81,7 +81,7 @@ export async function getServerSideProps(context) {
     const item = result.data;
     return { props: { item } };
   } catch (err) {
-    if (err.response.status === 404) {
+    if (err.response?.status === 404) {
       return {
         notFound: true,
       };
@@ -89,4 +89,5 @@ export async function getServerSideProps(context) {
       console.log(err);
     }
   }
+  return { props: {} };
 }
