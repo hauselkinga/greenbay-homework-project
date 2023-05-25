@@ -54,25 +54,26 @@ export default function ItemDetails({ item }) {
       }
     }
 
-    return (
-      <div className={`${styles.container} content`}>
-        <div className={styles.imgContainer}>
-          <img src={item.photoURL} />
-        </div>
-        <div className={styles.flex}>
-          <h1>Item name: {item.name}</h1>
-          <p>Price: {item.price} GBD</p>
-          <p>Description: {item.description}</p>
-          <p>Seller: {item.seller}</p>
-          <small className="small">{error}</small>
-          {item.buyer ? (
-            <p>Buyer: {item.buyer}</p>
-          ) : (
-            <button onClick={buy}>Buy</button>
+    if (session) {
+      return (
+        <div className={`${styles.container} content`}>
+          <div className={styles.imgContainer}>
+            <img src={item.photoURL} />
+          </div>
+          <div className={styles.flex}>
+            <h1>Item name: {item.name}</h1>
+            <p>Price: {item.price} GBD</p>
+            <p>Description: {item.description}</p>
+            <p>Seller: {item.seller}</p>
+            <small className="small">{error}</small>
+            {item.buyer && <p>Buyer: {item.buyer}</p>}
+            {item.isSellable && item.seller !== session.user.username && (
+              <button onClick={buy}>Buy</button>
             )}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
