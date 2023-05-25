@@ -41,5 +41,15 @@
         {
             _context.Entry(item).State = EntityState.Modified;
         }
+
+        public Task<List<Item>> ReturnPage(QueryParameters queryParameters)
+        {
+            IQueryable<Item> items = _context.Items;
+            var result = items
+                .Skip(queryParameters.Size * (queryParameters.Page - 1))
+                .Take(queryParameters.Size)
+                .ToListAsync();
+            return result;
+        }
     }
 }

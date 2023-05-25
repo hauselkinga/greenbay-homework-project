@@ -18,10 +18,20 @@
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<ItemDTO>>> GetAllItems()
+        public async Task<ActionResult<IQueryable<Item>>> GetAllItems([FromQuery] QueryParameters queryParameters)
         {
-            var items = await _itemRepository.GetItems();
-            var result = _mapper.Map<List<ItemDTO>>(items);
+            List<Item> items;
+            List<ItemDTO> result;
+
+            if(Request.Query.Count == 0)
+            {
+                items = await _itemRepository.GetItems();
+                result = _mapper.Map<List<ItemDTO>>(items);
+            } else
+            {
+                items = await _itemRepository.ReturnPage(queryParameters);
+                result = _mapper.Map<List<ItemDTO>>(items);
+            }
 
             return Ok(result);
         }

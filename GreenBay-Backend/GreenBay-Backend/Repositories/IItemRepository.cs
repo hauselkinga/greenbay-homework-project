@@ -8,5 +8,6 @@
         public Task SaveAsync();
         public Task LoadUserExplicitly(Item item);
         public void UpdateItem(Item item);
+        public Task<List<Item>> ReturnPage(QueryParameters queryParameters);
     }
 }
