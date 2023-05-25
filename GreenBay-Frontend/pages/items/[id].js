@@ -3,9 +3,11 @@ import styles from "../../styles/details.module.css";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router.js";
 import { useUserStore } from "../../store/useUserStore.js";
+import { useState } from "react";
 
 export default function ItemDetails({ item }) {
   const updateBalance = useUserStore((state) => state.updateBalance);
+  const [error, setError] = useState("");
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -28,6 +30,7 @@ export default function ItemDetails({ item }) {
   if (item) {
     async function buy() {
       try {
+        setError("");
         const result = await axios.put(
           `/api/items/${item.id}`,
           session.user.id,
@@ -43,7 +46,11 @@ export default function ItemDetails({ item }) {
           router.replace(router.asPath);
         }
       } catch (err) {
-        console.log(err);
+        if (err.response.status >= 500) {
+          setError("Something went wrong :( Please try again later!");
+        } else if (err.response.status >= 400) {
+          setError(err.response.data + " :(");
+        }
       }
     }
 
@@ -57,11 +64,12 @@ export default function ItemDetails({ item }) {
           <p>Price: {item.price} GBD</p>
           <p>Description: {item.description}</p>
           <p>Seller: {item.seller}</p>
+          <small className="small">{error}</small>
           {item.buyer ? (
             <p>Buyer: {item.buyer}</p>
           ) : (
             <button onClick={buy}>Buy</button>
-          )}
+            )}
         </div>
       </div>
     );
