@@ -2,7 +2,7 @@
 {
     public class QueryParameters
     {
-        const int _maxSize = 50;
+        readonly int _maxSize = 50;
         private int _size = 25;
 
         public int Page { get; set; } = 1;

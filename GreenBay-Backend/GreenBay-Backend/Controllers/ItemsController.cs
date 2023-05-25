@@ -18,18 +18,19 @@
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IQueryable<Item>>> GetAllItems([FromQuery] QueryParameters queryParameters)
+        public async Task<ActionResult<IQueryable<Item>>> GetAllItems([FromQuery] ItemQueryParameters queryParameters)
         {
             List<Item> items;
             List<ItemDTO> result;
+            bool pagination = Request.Query.Keys.Contains("size");
 
-            if(Request.Query.Count == 0)
+            if (Request.Query.Count == 0)
             {
                 items = await _itemRepository.GetItems();
                 result = _mapper.Map<List<ItemDTO>>(items);
             } else
             {
-                items = await _itemRepository.ReturnPage(queryParameters);
+                items = await _itemRepository.HandleQueryParams(queryParameters, pagination);
                 result = _mapper.Map<List<ItemDTO>>(items);
             }
 

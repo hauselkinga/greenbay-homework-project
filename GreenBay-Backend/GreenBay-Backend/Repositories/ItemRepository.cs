@@ -42,14 +42,23 @@
             _context.Entry(item).State = EntityState.Modified;
         }
 
-        public Task<List<Item>> ReturnPage(QueryParameters queryParameters)
+        public Task<List<Item>> HandleQueryParams(ItemQueryParameters queryParameters, bool pagination)
         {
             IQueryable<Item> items = _context.Items;
-            var result = items
-                .Skip(queryParameters.Size * (queryParameters.Page - 1))
-                .Take(queryParameters.Size)
-                .ToListAsync();
-            return result;
+
+            if (queryParameters.IsSellable != null)
+            {
+                items = items.Where(i => i.IsSellable == true);
+            }
+
+            if (pagination)
+            {
+                items = items
+                    .Skip(queryParameters.Size * (queryParameters.Page - 1))
+                    .Take(queryParameters.Size);
+            }
+
+            return items.ToListAsync();
         }
     }
 }
