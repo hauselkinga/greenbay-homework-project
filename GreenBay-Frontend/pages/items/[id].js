@@ -5,7 +5,7 @@ import { useRouter } from "next/router.js";
 import { useUserStore } from "../../store/useUserStore.js";
 
 export default function ItemDetails({ item }) {
-  const updateBalance = useUserStore(state => state.updateBalance);
+  const updateBalance = useUserStore((state) => state.updateBalance);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -28,14 +28,19 @@ export default function ItemDetails({ item }) {
   if (item) {
     async function buy() {
       try {
-        const result = await axios.put(`/api/items/${item.id}`, session.user.id, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.accessToken}`,
-          },
-        });
+        const result = await axios.put(
+          `/api/items/${item.id}`,
+          session.user.id,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.accessToken}`,
+            },
+          }
+        );
         if (result.status < 300) {
           await refreshBalance();
+          router.replace(router.asPath);
         }
       } catch (err) {
         console.log(err);
@@ -52,7 +57,11 @@ export default function ItemDetails({ item }) {
           <p>Price: {item.price} GBD</p>
           <p>Description: {item.description}</p>
           <p>Seller: {item.seller}</p>
-          <button onClick={buy}>Buy</button>
+          {item.buyer ? (
+            <p>Buyer: {item.buyer}</p>
+          ) : (
+            <button onClick={buy}>Buy</button>
+          )}
         </div>
       </div>
     );
@@ -72,8 +81,12 @@ export async function getServerSideProps(context) {
     const item = result.data;
     return { props: { item } };
   } catch (err) {
-    console.log(err);
+    if (err.response.status === 404) {
+      return {
+        notFound: true,
+      };
+    } else {
+      console.log(err);
+    }
   }
-
-  return { props: {} };
 }
