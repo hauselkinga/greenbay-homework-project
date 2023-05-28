@@ -9,7 +9,7 @@ export default function CreateItem() {
   const { status } = useSession();
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    router.replace("/login");
   }
 
   const initialValues = {
@@ -44,7 +44,7 @@ export default function CreateItem() {
     if (!data.photoURL) {
       errors.photoURL = "Photo URL is required!";
     } else if (!validateURL(data.photoURL)) {
-      errors.photoURL = "URL is invalid!"
+      errors.photoURL = "URL is invalid!";
     }
 
     if (!data.price) {
@@ -57,7 +57,8 @@ export default function CreateItem() {
   }
 
   function validateURL(url) {
-    const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    const urlRegex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
     return urlRegex.test(url);
   }
 

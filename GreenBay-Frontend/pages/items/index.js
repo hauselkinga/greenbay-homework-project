@@ -1,19 +1,12 @@
 import axios from "axios";
 import Card from "../../comps/Card.js";
 import style from "../../styles/Card.module.css";
-import { getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router.js";
+import { getSession } from "next-auth/react";
 import { useState } from "react";
 import PageNode from "../../comps/PageNode.js";
 
 export default function Items({ data }) {
-  const { status } = useSession();
-  const router = useRouter();
   const [dataToLoad, setDataToLoad] = useState(data.slice(0, 10));
-
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
 
   function countPages(data) {
     const size = 10;
@@ -30,33 +23,41 @@ export default function Items({ data }) {
     setDataToLoad(newData);
   }
 
-  if (data) {
-    return (
-      <>
-        <div className={`${style.card} container`}>
-          {dataToLoad.map((item) => {
-            return <Card item={item} key={item.id} />;
-          })}
-        </div>
-        <div className="center" style={{ marginTop: '2rem' }}>
-          {countPages(data).map((page) => {
-            return (
-              <PageNode
-                page={page}
-                key={page}
-                onDataLoaded={handleDataLoaded}
-              ></PageNode>
-            );
-          })}
-        </div>
-      </>
-    );
-  }
+  return (
+    <>
+      <div className={`${style.card} container`}>
+        {dataToLoad.map((item) => {
+          return <Card item={item} key={item.id} />;
+        })}
+      </div>
+      <div className="center" style={{ marginTop: "2rem" }}>
+        {countPages(data).map((page) => {
+          return (
+            <PageNode
+              page={page}
+              key={page}
+              onDataLoaded={handleDataLoaded}
+            ></PageNode>
+          );
+        })}
+      </div>
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {
   try {
     const session = await getSession(context);
+
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false
+        },
+      };
+    }
+
     const result = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/items?isSellable=true`,
       {
@@ -68,6 +69,4 @@ export async function getServerSideProps(context) {
   } catch (err) {
     console.log(err);
   }
-
-  return { props: {} };
 }
