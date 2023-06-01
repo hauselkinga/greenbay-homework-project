@@ -22,9 +22,9 @@
         {
             List<Item> items;
             List<ItemDTO> result;
-            bool pagination = Request.Query.Keys.Contains("size");
+            bool pagination = (queryParameters.Size != 0);
 
-            if (Request.Query.Count == 0)
+            if (!pagination && queryParameters.IsSellable == null)
             {
                 items = await _itemRepository.GetItems();
                 result = _mapper.Map<List<ItemDTO>>(items);
