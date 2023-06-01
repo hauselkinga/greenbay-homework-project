@@ -1,7 +1,3 @@
-using GreenBay_Backend.DTO.Outgoing;
-using GreenBay_Backend.Models;
-using Microsoft.AspNetCore.Mvc;
-
 namespace GreenBay_UnitTest
 {
     public class ItemsControllerTest

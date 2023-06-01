@@ -1,8 +1,3 @@
-using GreenBay_Backend.DTO.Incoming;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Text;
-using System.Text.Json;
-
 namespace GreenBay_IntegrationTest
 {
     public class ItemsControllerTest : IClassFixture<WebApplicationFactory<Program>>
