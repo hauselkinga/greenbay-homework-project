@@ -26,7 +26,7 @@ export default function Navbar() {
       const data = result.data;
       updateBalance(data.balance)
     } catch (err) {
-      console.log(err.message);
+      updateBalance("Uh oh...")
     }
   }
 

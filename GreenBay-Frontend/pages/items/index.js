@@ -6,43 +6,47 @@ import { useState } from "react";
 import PageNode from "../../comps/PageNode.js";
 
 export default function Items({ data }) {
-  const [dataToLoad, setDataToLoad] = useState(data.slice(0, 10));
+  if (data) {
+    const [dataToLoad, setDataToLoad] = useState(data.slice(0, 10));
 
-  function countPages(data) {
-    const size = 10;
-    let pages = Math.ceil(data.length / size);
-    let pageCount = [];
+    function countPages(data) {
+      const size = 10;
+      let pages = Math.ceil(data.length / size);
+      let pageCount = [];
 
-    for (let i = 0; i < pages; i++) {
-      pageCount.push(i + 1);
+      for (let i = 0; i < pages; i++) {
+        pageCount.push(i + 1);
+      }
+      return pageCount;
     }
-    return pageCount;
-  }
 
-  function handleDataLoaded(newData) {
-    setDataToLoad(newData);
-  }
+    function handleDataLoaded(newData) {
+      setDataToLoad(newData);
+    }
 
-  return (
-    <>
-      <div className={`${style.card} container`}>
-        {dataToLoad.map((item) => {
-          return <Card item={item} key={item.id} />;
-        })}
-      </div>
-      <div className="center" style={{ marginTop: "2rem" }}>
-        {countPages(data).map((page) => {
-          return (
-            <PageNode
-              page={page}
-              key={page}
-              onDataLoaded={handleDataLoaded}
-            ></PageNode>
-          );
-        })}
-      </div>
-    </>
-  );
+    return (
+      <>
+        <div className={`${style.card} container`}>
+          {dataToLoad.map((item) => {
+            return <Card item={item} key={item.id} />;
+          })}
+        </div>
+        <div className="center" style={{ marginTop: "2rem" }}>
+          {countPages(data).map((page) => {
+            return (
+              <PageNode
+                page={page}
+                key={page}
+                onDataLoaded={handleDataLoaded}
+              ></PageNode>
+            );
+          })}
+        </div>
+      </>
+    );
+  } else {
+    return <div className="center">Something went wrong. :(</div>;
+  }
 }
 
 export async function getServerSideProps(context) {
@@ -67,6 +71,6 @@ export async function getServerSideProps(context) {
     const data = result.data;
     return { props: { data } };
   } catch (err) {
-    console.log(err);
+    return { props: {} };
   }
 }

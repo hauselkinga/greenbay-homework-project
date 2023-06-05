@@ -17,6 +17,8 @@ export default function Login() {
 
     if (result.ok) {
       router.push("/items");
+    } else if (result.error.includes("ECONNREFUSED")) {
+      setError("Something went wrong. :(  Please try again later!");
     } else {
       setError("Wrong username or password. :(");
     }

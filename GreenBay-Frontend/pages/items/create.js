@@ -22,6 +22,7 @@ export default function CreateItem() {
 
   const [data, setData] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState({});
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -86,7 +87,11 @@ export default function CreateItem() {
         });
         router.push(`/items/${result.data.id}`);
       } catch (err) {
-        console.log(err);
+        if (err.response.status === 500) {
+          setError({general: "Something went wrong. :(" });
+        } else {
+          console.log(err);
+        }
       }
     }
   }
@@ -95,6 +100,7 @@ export default function CreateItem() {
     return (
       <div className="content">
         <h1>Add a new item for sale!</h1>
+        <small className="small">{error.general}</small>
         <form>
           <div className={styles.formControl}>
             <label htmlFor="name" className={styles.label}>
