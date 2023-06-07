@@ -2,12 +2,6 @@
 {
     public class UserHelper : IUserHelper
     {
-        public readonly IConfiguration _configuration;
-        public UserHelper(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
